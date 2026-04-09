@@ -1,200 +1,315 @@
 # 💸 Expense Tracker with FinBot AI
 
-A full-stack expense tracking application with AI-powered financial assistant built with Next.js 16, MongoDB, deployed on AWS EC2 with Jenkins CI/CD pipeline.
+A full-stack expense tracking application with an AI-powered financial assistant. Built with **Next.js 16**, **MongoDB Atlas**, and deployed on **AWS EC2** with a **Jenkins CI/CD pipeline**.
+
+---
 
 ## 🛠️ Tech Stack
 
 | Category | Technology |
 |----------|-----------|
-| Frontend | Next.js 16, React, Tailwind CSS |
+| Frontend | Next.js 16 (App Router), React, Tailwind CSS |
 | Backend | Next.js API Routes, Node.js |
-| Database | MongoDB Atlas, Mongoose |
-| Auth | JWT (jose library) |
-| AI | GROQ API (FinBot Assistant) |
-| DevOps | AWS EC2, PM2, Jenkins |
+| Database | MongoDB Atlas, Mongoose ODM |
+| Authentication | JWT (jose library), httpOnly Cookies |
+| AI Assistant | GROQ API (FinBot) |
+| Validation | Zod |
+| Process Manager | PM2 |
+| CI/CD | Jenkins |
+| Cloud | AWS EC2 (Ubuntu 24.04) |
 | Version Control | GitHub |
+
+---
+
+## ✨ Features
+
+- ✅ User Registration & Login with JWT Authentication
+- ✅ Add, Edit, Delete Expenses
+- ✅ Dashboard with Charts & Expense Summary
+- ✅ AI-Powered Financial Assistant (FinBot) using GROQ
+- ✅ PDF Expense Report Generation
+- ✅ Secure httpOnly Cookie-based Auth
+- ✅ MongoDB Atlas Cloud Database
+- ✅ Production Deployment on AWS EC2
+- ✅ PM2 for 24/7 App Uptime
+- ✅ CI/CD Pipeline with Jenkins (Auto Deploy on Git Push)
 
 ---
 
 ## 📁 Project Structure
 
+```
 expenseTracker/
 ├── app/
 │   ├── api/
 │   │   ├── auth/
-│   │   │   ├── login/route.ts       # User login
-│   │   │   ├── logout/route.ts      # User logout
-│   │   │   ├── me/route.ts          # Get current user
-│   │   │   └── register/route.ts   # User registration
+│   │   │   ├── login/route.ts         # POST - User login, sets JWT cookie
+│   │   │   ├── logout/route.ts        # POST - Clears JWT cookie
+│   │   │   ├── me/route.ts            # GET  - Returns current logged-in user
+│   │   │   └── register/route.ts      # POST - Register new user
 │   │   ├── expenses/
-│   │   │   ├── route.ts             # Get/Create expenses
-│   │   │   ├── [id]/route.ts        # Update/Delete expense
-│   │   │   ├── report/route.ts      # Generate PDF report
-│   │   │   └── summary/route.ts     # Expense summary
-│   │   └── chat/route.ts            # FinBot AI chat
-│   ├── dashboard/page.tsx           # Dashboard page
-│   ├── expenses/page.tsx            # Expenses page
-│   ├── assistant/page.tsx           # AI Assistant page
-│   ├── login/page.tsx               # Login page
-│   └── register/page.tsx           # Register page
-├── components/                      # Reusable UI components
+│   │   │   ├── route.ts               # GET/POST - List & create expenses
+│   │   │   ├── [id]/route.ts          # PUT/DELETE - Update & delete expense
+│   │   │   ├── report/route.ts        # GET - Download PDF report
+│   │   │   └── summary/route.ts       # GET - Expense summary & stats
+│   │   └── chat/route.ts              # POST - FinBot AI chat endpoint
+│   ├── dashboard/
+│   │   └── page.tsx                   # Dashboard with charts
+│   ├── expenses/
+│   │   └── page.tsx                   # All expenses list page
+│   ├── assistant/
+│   │   └── page.tsx                   # FinBot AI assistant page
+│   ├── login/
+│   │   └── page.tsx                   # Login page
+│   └── register/
+│       └── page.tsx                   # Register page
+├── components/                        # Reusable React UI components
 ├── lib/
-│   ├── auth.ts                      # JWT auth functions
-│   ├── db.ts                        # MongoDB connection
-│   └── validations.ts               # Zod validations
+│   ├── auth.ts                        # JWT create, verify, cookie functions
+│   ├── db.ts                          # MongoDB connection handler
+│   └── validations.ts                 # Zod input validation schemas
 ├── models/
-│   └── User.ts                      # User MongoDB schema
-├── public/                          # Static assets
-├── .env                             # Environment variables
-├── .gitignore                       # Git ignore
-└── package.json                     # Dependencies
-
----
-
-## 🚀 Features
-
-- ✅ User Authentication (Register/Login/Logout)
-- ✅ Add, Edit, Delete Expenses
-- ✅ Dashboard with Charts & Summary
-- ✅ AI Financial Assistant (FinBot)
-- ✅ PDF Report Generation
-- ✅ JWT Cookie-based Auth
-- ✅ MongoDB Atlas Database
-- ✅ Production Deployment on AWS EC2
-- ✅ CI/CD Pipeline with Jenkins
+│   └── User.ts                        # Mongoose User schema & model
+├── public/                            # Static assets (images, icons)
+├── .env                               # Environment variables (never push to Git!)
+├── .gitignore                         # Git ignore rules
+├── next.config.ts                     # Next.js configuration
+├── tailwind.config.ts                 # Tailwind CSS configuration
+└── package.json                       # Project dependencies & scripts
+```
 
 ---
 
 ## ⚙️ Environment Variables
 
-Create `.env` file in root directory:
+Create a `.env` file in the root of your project:
 
 ```env
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/expense-tracker
-JWT_SECRET=your_jwt_secret_minimum_32_characters
-GROQ_API_KEY=your_groq_api_key
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/expense-tracker?retryWrites=true&w=majority
+JWT_SECRET=your_super_secret_key_minimum_32_characters_long
+GROQ_API_KEY=your_groq_api_key_from_console.groq.com
 PORT=3000
 NODE_ENV=production
 ```
+
+> ⚠️ **WARNING:** Never push `.env` to GitHub. It is already added to `.gitignore`.
 
 ---
 
 ## 🏃 Run Locally
 
 ```bash
-# Clone the repo
+# 1. Clone the repository
 git clone https://github.com/anmol2517/expense-trackers-with-FinBotAI.git
 
-# Go to project folder
+# 2. Go into project folder
 cd expense-trackers-with-FinBotAI
 
-# Install dependencies
+# 3. Install all dependencies
 npm install
 
-# Create .env file and fill variables
+# 4. Create .env file and add your variables
 nano .env
 
-# Run development server
+# 5. Run development server
 npm run dev
 
-# Open browser at
-http://localhost:3000
+# 6. Open in browser
+# http://localhost:3000
 ```
 
 ---
 
-## ☁️ AWS EC2 Deployment
+## 🗄️ MongoDB Atlas Setup
 
-### 1. Launch EC2 Instance
-- AMI: Ubuntu 24.04 LTS
-- Instance Type: t3.micro
-- Key Pair: Create new .pem file
-- Security Group Inbound Rules:
-  - Port 22 (SSH)
-  - Port 80 (HTTP)
-  - Port 443 (HTTPS)
-  - Port 3000 (Next.js App)
-  - Port 8080 (Jenkins)
+1. Go to [https://cloud.mongodb.com](https://cloud.mongodb.com) and create a free account
+2. Create a new **free cluster** (M0)
+3. Go to **Database Access** → Add a new database user with username & password
+4. Go to **Network Access** → Add IP Address → Allow access from anywhere (`0.0.0.0/0`)
+5. Go to **Connect** → Connect your application → Copy the connection string
+6. Paste the connection string in your `.env` file as `MONGODB_URI`
+7. Replace `<password>` with your actual database user password
 
-### 2. Connect to EC2
+---
+
+## ☁️ AWS EC2 Deployment (Step by Step)
+
+### Step 1 — Launch EC2 Instance
+
+1. Go to AWS Console → EC2 → Launch Instance
+2. Choose **Ubuntu 24.04 LTS** AMI
+3. Instance type: **t3.micro** (free tier eligible)
+4. Create a new **Key Pair** → Download `.pem` file (keep it safe!)
+5. Configure Security Group — Add these Inbound Rules:
+
+| Type | Protocol | Port | Source |
+|------|----------|------|--------|
+| SSH | TCP | 22 | 0.0.0.0/0 |
+| HTTP | TCP | 80 | 0.0.0.0/0 |
+| HTTPS | TCP | 443 | 0.0.0.0/0 |
+| Custom TCP | TCP | 3000 | 0.0.0.0/0 |
+| Custom TCP | TCP | 8080 | 0.0.0.0/0 |
+
+6. Launch the instance and note the **Public IPv4 address**
+
+---
+
+### Step 2 — Connect to EC2 via SSH
+
 ```bash
-ssh -i "your-key.pem" ubuntu@YOUR_EC2_IP
+ssh -i "your-key.pem" ubuntu@YOUR_EC2_PUBLIC_IP
 ```
 
-### 3. Install Node.js
+---
+
+### Step 3 — Install Node.js on EC2
+
 ```bash
+# Update packages
+sudo apt update
+
+# Add Node.js v20 repository
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+
+# Install Node.js
 sudo apt install nodejs -y
+
+# Verify installation
 node -v
 npm -v
 ```
 
-### 4. Add Swap Memory
+---
+
+### Step 4 — Add Swap Memory (Prevents build crashes on low RAM)
+
 ```bash
 sudo fallocate -l 2G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
-```
 
-### 5. Upload Project
-```bash
-# On local machine
-scp -r ./expenseTracker ubuntu@YOUR_EC2_IP:~/
-```
-
-### 6. Install & Build
-```bash
-cd expenseTracker
-npm install
-nano .env        # Add environment variables
-npm run build
-```
-
-### 7. Run with PM2
-```bash
-sudo npm install -g pm2
-pm2 start npm --name "expense-tracker" -- start
-pm2 startup
-pm2 save
+# Verify swap
+free -h
 ```
 
 ---
 
-## 🔧 Jenkins CI/CD Pipeline
-
-### Install Jenkins
+### Step 5 — Upload Project to EC2
 
 ```bash
-# Install Java
+# Run this on your LOCAL machine (not EC2)
+scp -r ./expenseTracker ubuntu@YOUR_EC2_IP:~/
+```
+
+---
+
+### Step 6 — Setup Project on EC2
+
+```bash
+# Go into project folder
+cd expenseTracker
+
+# Install dependencies
+npm install
+
+# Create .env file
+nano .env
+# Paste your environment variables, then Ctrl+X → Y → Enter to save
+
+# Build the production app
+npm run build
+```
+
+---
+
+### Step 7 — Run App with PM2 (24/7 Uptime)
+
+```bash
+# Install PM2 globally
+sudo npm install -g pm2
+
+# Start the app
+pm2 start npm --name "expense-tracker" -- start
+
+# Setup PM2 to auto-start on server reboot
+pm2 startup
+# Copy and run the command that PM2 outputs
+
+# Save current PM2 process list
+pm2 save
+
+# Check app status
+pm2 status
+```
+
+App is now running at `http://YOUR_EC2_IP:3000` 🎉
+
+---
+
+## 🔧 Jenkins CI/CD Pipeline Setup
+
+### What is CI/CD?
+CI/CD (Continuous Integration / Continuous Deployment) means every time you push code to GitHub, Jenkins automatically pulls the new code, installs dependencies, builds the app, and deploys it — without any manual work!
+
+---
+
+### Step 1 — Install Java (Jenkins requires Java)
+
+```bash
 sudo apt install fontconfig openjdk-21-jre -y
 
-# Add Jenkins key
+# Verify
+java -version
+```
+
+---
+
+### Step 2 — Install Jenkins
+
+```bash
+# Add Jenkins GPG key
 curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo gpg --dearmor -o /usr/share/keyrings/jenkins-keyring.gpg
 
 # Add Jenkins repository
 echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.gpg] https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
 
-# Install
+# Update and install
 sudo apt update
 sudo apt install jenkins -y
 
-# Start Jenkins
+# Start Jenkins service
 sudo systemctl start jenkins
+
+# Enable Jenkins to start on reboot
 sudo systemctl enable jenkins
 
-# Get initial password
-sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+# Check Jenkins status
+sudo systemctl status jenkins
 ```
 
-### Jenkins Setup Steps
-1. Open `http://YOUR_IP:8080`
-2. Enter initial admin password
-3. Install suggested plugins
-4. Create admin user
-5. New Item → Pipeline → Name: `expense-tracker-pipeline`
+---
 
-### Jenkinsfile (Pipeline Script)
+### Step 3 — Access Jenkins UI
+
+1. Open browser: `http://YOUR_EC2_IP:8080`
+2. Get initial admin password:
+```bash
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```
+3. Paste password in Jenkins UI
+4. Click **"Install suggested plugins"**
+5. Create your admin user (username, password, email)
+6. Click **Save and Finish**
+
+---
+
+### Step 4 — Create Pipeline Job
+
+1. Click **"New Item"**
+2. Enter name: `expense-tracker-pipeline`
+3. Select **"Pipeline"** → Click **OK**
+4. In **"Pipeline"** section, paste this script:
 
 ```groovy
 pipeline {
@@ -203,7 +318,7 @@ pipeline {
         stage('Clone') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/anmol2517/expense-trackers-with-FinBotAI.git'
+                    url: 'https://github.com/anmol2517/expense-trackers-with-FinBotAI.git'
             }
         }
         stage('Install') {
@@ -225,45 +340,41 @@ pipeline {
 }
 ```
 
----
-
-## 🗄️ MongoDB Atlas Setup
-
-1. Create account at mongodb.com
-2. Create free cluster
-3. Database Access → Add user with password
-4. Network Access → Add IP `0.0.0.0/0`
-5. Connect → Copy connection string to `.env`
-
----
-
-## 🔐 Security
-
-- JWT tokens stored in httpOnly cookies
-- Passwords hashed with bcrypt
-- Environment variables never pushed to Git
-- `.env` added to `.gitignore`
+5. Click **Save**
+6. Click **"Build Now"**
+7. Check **Console Output** — you should see `Finished: SUCCESS` ✅
 
 ---
 
 ## 📊 API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register user |
-| POST | `/api/auth/login` | Login user |
-| POST | `/api/auth/logout` | Logout user |
-| GET | `/api/auth/me` | Get current user |
-| GET | `/api/expenses` | Get all expenses |
-| POST | `/api/expenses` | Create expense |
-| PUT | `/api/expenses/[id]` | Update expense |
-| DELETE | `/api/expenses/[id]` | Delete expense |
-| GET | `/api/expenses/summary` | Get summary |
-| GET | `/api/expenses/report` | Download PDF |
-| POST | `/api/chat` | FinBot AI chat |
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/api/auth/register` | Register new user | ❌ |
+| POST | `/api/auth/login` | Login & get JWT cookie | ❌ |
+| POST | `/api/auth/logout` | Logout & clear cookie | ✅ |
+| GET | `/api/auth/me` | Get current user info | ✅ |
+| GET | `/api/expenses` | Get all user expenses | ✅ |
+| POST | `/api/expenses` | Create new expense | ✅ |
+| PUT | `/api/expenses/[id]` | Update an expense | ✅ |
+| DELETE | `/api/expenses/[id]` | Delete an expense | ✅ |
+| GET | `/api/expenses/summary` | Get expense stats | ✅ |
+| GET | `/api/expenses/report` | Download PDF report | ✅ |
+| POST | `/api/chat` | Chat with FinBot AI | ✅ |
+
+---
+
+## 🔐 Security Measures
+
+- Passwords hashed using **bcrypt**
+- JWT tokens stored in **httpOnly cookies** (not accessible via JavaScript)
+- Input validation using **Zod** schemas
+- `.env` file added to `.gitignore` — never pushed to GitHub
+- MongoDB Atlas Network Access configured per environment
 
 ---
 
 ## 👨‍💻 Author
 
-**anmoL**
+**Anmol**
+- GitHub: [@anmol2517](https://github.com/anmol2517)
