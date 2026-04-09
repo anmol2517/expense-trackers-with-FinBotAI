@@ -1,3 +1,54 @@
+# 💸 Expense Tracker with FinBot AI
+
+A full-stack expense tracking application with AI-powered financial assistant built with Next.js 16, MongoDB, deployed on AWS EC2 with Jenkins CI/CD pipeline.
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|----------|-----------|
+| Frontend | Next.js 16, React, Tailwind CSS |
+| Backend | Next.js API Routes, Node.js |
+| Database | MongoDB Atlas, Mongoose |
+| Auth | JWT (jose library) |
+| AI | GROQ API (FinBot Assistant) |
+| DevOps | AWS EC2, PM2, Jenkins |
+| Version Control | GitHub |
+
+---
+
+## 📁 Project Structure
+
+expenseTracker/
+├── app/
+│   ├── api/
+│   │   ├── auth/
+│   │   │   ├── login/route.ts       # User login
+│   │   │   ├── logout/route.ts      # User logout
+│   │   │   ├── me/route.ts          # Get current user
+│   │   │   └── register/route.ts   # User registration
+│   │   ├── expenses/
+│   │   │   ├── route.ts             # Get/Create expenses
+│   │   │   ├── [id]/route.ts        # Update/Delete expense
+│   │   │   ├── report/route.ts      # Generate PDF report
+│   │   │   └── summary/route.ts     # Expense summary
+│   │   └── chat/route.ts            # FinBot AI chat
+│   ├── dashboard/page.tsx           # Dashboard page
+│   ├── expenses/page.tsx            # Expenses page
+│   ├── assistant/page.tsx           # AI Assistant page
+│   ├── login/page.tsx               # Login page
+│   └── register/page.tsx           # Register page
+├── components/                      # Reusable UI components
+├── lib/
+│   ├── auth.ts                      # JWT auth functions
+│   ├── db.ts                        # MongoDB connection
+│   └── validations.ts               # Zod validations
+├── models/
+│   └── User.ts                      # User MongoDB schema
+├── public/                          # Static assets
+├── .env                             # Environment variables
+├── .gitignore                       # Git ignore
+└── package.json                     # Dependencies
+
 ---
 
 ## 🚀 Features
