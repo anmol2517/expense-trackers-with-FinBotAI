@@ -1,6 +1,38 @@
-# 💸 Expense Tracker with FinBot AI
+<div align="center">
 
-A full-stack expense tracking application with an AI-powered financial assistant. Built with **Next.js 16**, **MongoDB Atlas**, and deployed on **AWS EC2** with a **Jenkins CI/CD pipeline**.
+# 💸 EXPENSE TRACKER · FINBOT AI
+
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb)
+![Node.js](https://img.shields.io/badge/Node.js-20-339933?style=for-the-badge&logo=node.js)
+![JWT](https://img.shields.io/badge/JWT-Auth-000000?style=for-the-badge&logo=jsonwebtokens)
+![AWS](https://img.shields.io/badge/AWS-EC2-FF9900?style=for-the-badge&logo=amazonaws)
+![Jenkins](https://img.shields.io/badge/Jenkins-CI%2FCD-D24939?style=for-the-badge&logo=jenkins)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+
+A full-stack Expense Tracking application with AI-powered Financial Assistant.
+
+*Next.js 16 · MongoDB Atlas · JWT Auth · GROQ AI · AWS EC2 · Jenkins CI/CD · PM2*
+
+[Features](#-features) • [Project Structure](#-project-structure) • [Setup](#-run-locally) • [AWS Deployment](#-aws-ec2-deployment-step-by-step) • [Jenkins CI/CD](#-jenkins-cicd-pipeline-setup) • [API Docs](#-api-endpoints)
+
+</div>
+
+---
+
+## ✨ Features
+
+- ✅ User Registration & Login with JWT Authentication
+- ✅ Add, Edit, Delete Expenses
+- ✅ Dashboard with Charts & Expense Summary
+- ✅ AI-Powered Financial Assistant (FinBot) using GROQ
+- ✅ PDF Expense Report Generation
+- ✅ Secure httpOnly Cookie-based Auth
+- ✅ MongoDB Atlas Cloud Database
+- ✅ Production Deployment on AWS EC2
+- ✅ PM2 for 24/7 App Uptime
+- ✅ CI/CD Pipeline with Jenkins (Auto Deploy on Git Push)
 
 ---
 
@@ -21,21 +53,6 @@ A full-stack expense tracking application with an AI-powered financial assistant
 
 ---
 
-## ✨ Features
-
-- ✅ User Registration & Login with JWT Authentication
-- ✅ Add, Edit, Delete Expenses
-- ✅ Dashboard with Charts & Expense Summary
-- ✅ AI-Powered Financial Assistant (FinBot) using GROQ
-- ✅ PDF Expense Report Generation
-- ✅ Secure httpOnly Cookie-based Auth
-- ✅ MongoDB Atlas Cloud Database
-- ✅ Production Deployment on AWS EC2
-- ✅ PM2 for 24/7 App Uptime
-- ✅ CI/CD Pipeline with Jenkins (Auto Deploy on Git Push)
-
----
-
 ## 📁 Project Structure
 
 ```
@@ -53,16 +70,11 @@ expenseTracker/
 │   │   │   ├── report/route.ts        # GET - Download PDF report
 │   │   │   └── summary/route.ts       # GET - Expense summary & stats
 │   │   └── chat/route.ts              # POST - FinBot AI chat endpoint
-│   ├── dashboard/
-│   │   └── page.tsx                   # Dashboard with charts
-│   ├── expenses/
-│   │   └── page.tsx                   # All expenses list page
-│   ├── assistant/
-│   │   └── page.tsx                   # FinBot AI assistant page
-│   ├── login/
-│   │   └── page.tsx                   # Login page
-│   └── register/
-│       └── page.tsx                   # Register page
+│   ├── dashboard/page.tsx             # Dashboard with charts
+│   ├── expenses/page.tsx              # All expenses list page
+│   ├── assistant/page.tsx             # FinBot AI assistant page
+│   ├── login/page.tsx                 # Login page
+│   └── register/page.tsx             # Register page
 ├── components/                        # Reusable React UI components
 ├── lib/
 │   ├── auth.ts                        # JWT create, verify, cookie functions
@@ -243,8 +255,6 @@ pm2 save
 pm2 status
 ```
 
-App is now running at `http://YOUR_EC2_IP:3000` 🎉
-
 ---
 
 ## 🔧 Jenkins CI/CD Pipeline Setup
@@ -342,7 +352,7 @@ pipeline {
 
 5. Click **Save**
 6. Click **"Build Now"**
-7. Check **Console Output** — you should see `Finished: SUCCESS` ✅
+7. Check **Console Output** — you will see `Finished: SUCCESS` ✅
 
 ---
 
